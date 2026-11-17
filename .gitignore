@@ -1,0 +1,23 @@
+# Secrets et configuration locale : ne jamais versionner
+.env
+.env.*
+!.env.example
+
+# Dépendances (chaque application a aussi son propre .gitignore)
+node_modules/
+vendor/
+
+# Systèmes d'exploitation
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Journaux et fichiers temporaires
+*.log
+coverage/
+.phpunit.result.cache

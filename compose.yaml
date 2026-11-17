@@ -1,0 +1,83 @@
+# ---------------------------------------------------------------
+# Environnement local CliniFlow
+# Lancer : docker compose up -d       Arrêter : docker compose down
+# Les valeurs ${...} viennent du fichier .env à la racine.
+# ---------------------------------------------------------------
+name: cliniflow
+
+services:
+
+  # API Laravel exécutée par PHP-FPM (image construite par nous)
+  app:
+    build:
+      context: ./docker/php
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    volumes:
+      # Montage du code : une modification dans ton éditeur est
+      # visible immédiatement dans le conteneur, sans reconstruire.
+      - ./backend:/var/www/backend
+    depends_on:
+      mysql:
+        condition: service_healthy   # attendre que MySQL soit prêt
+      redis:
+        condition: service_started
+
+  # Serveur web : seule porte d'entrée HTTP de l'API
+  web:
+    image: nginx:1.27-alpine
+    ports:
+      - "${APP_PORT:-8080}:80"      # http://localhost:8080
+    volumes:
+      - ./backend:/var/www/backend:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+
+  # Base de données
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-cliniflow}
+      MYSQL_USER: ${DB_USERNAME:-cliniflow}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Définir DB_PASSWORD dans .env}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Définir DB_ROOT_PASSWORD dans .env}
+    ports:
+      - "${DB_PORT:-3307}:3306"     # 3307 pour éviter un conflit avec un MySQL local
+    volumes:
+      # Volume nommé : les données survivent à un "docker compose down"
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Cache et files d'attente (import des résultats du DME)
+  redis:
+    image: redis:7.4-alpine
+
+  # Faux serveur de courriel : capte les courriels envoyés par
+  # l'application (ex. lien de mot de passe, AUTH-3).
+  # Interface : http://localhost:8025
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "${MAILPIT_UI_PORT:-8025}:8025"
+
+  # Serveur de développement React (Vite).
+  # Profil "front" : ne démarre qu'avec --profile front, une fois
+  # l'application créée (tâche CLF-35).
+  front:
+    image: node:24-alpine
+    profiles: ["front"]
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "${FRONT_PORT:-5173}:5173"  # http://localhost:5173
+    volumes:
+      - ./frontend:/app
+
+volumes:
+  mysql-data:

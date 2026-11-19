@@ -7,11 +7,6 @@
       </laravel_pint_by_interpreter>
     </laravel_pint_settings>
   </component>
-  <component name="MessDetector">
-    <phpmd_settings>
-      <phpmd_by_interpreter asDefaultInterpreter="true" interpreter_id="bad8c2f4-872b-49b7-896f-642b114f8ca1" timeout="30000" />
-    </phpmd_settings>
-  </component>
   <component name="MessDetectorOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>
@@ -26,11 +21,6 @@
     <phpcsfixer_settings>
       <phpcs_fixer_by_interpreter asDefaultInterpreter="true" interpreter_id="bad8c2f4-872b-49b7-896f-642b114f8ca1" timeout="30000" />
     </phpcsfixer_settings>
-  </component>
-  <component name="PhpCodeSniffer">
-    <phpcs_settings>
-      <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="bad8c2f4-872b-49b7-896f-642b114f8ca1" timeout="30000" />
-    </phpcs_settings>
   </component>
   <component name="PhpIncludePathManager">
     <include_path>
@@ -167,14 +157,20 @@
   </component>
   <component name="PhpInterpreters">
     <interpreters>
-      <interpreter id="bad8c2f4-872b-49b7-896f-642b114f8ca1" name="cliniflow-app:latest" home="docker://DATA" auto="false" debugger_id="php.debugger.XDebug">
-        <remote_data INTERPRETER_PATH="php" HELPERS_PATH="/opt/.phpstorm_helpers" VALID="true" RUN_AS_ROOT_VIA_SUDO="false" DOCKER_ACCOUNT_NAME="Docker" DOCKER_IMAGE_NAME="cliniflow-app:latest" DOCKER_REMOTE_PROJECT_PATH="/opt/project" />
+      <interpreter id="2478dfd6-e434-41f3-82d0-1334044f8eca" name="CliniFlow" home="docker-compose://DATA" auto="false" debugger_id="php.debugger.XDebug">
+        <remote_data INTERPRETER_PATH="php" HELPERS_PATH="/opt/.phpstorm_helpers" VALID="true" RUN_AS_ROOT_VIA_SUDO="false" DOCKER_ACCOUNT_NAME="Docker" DOCKER_COMPOSE_SERVICE_NAME="app" DOCKER_REMOTE_PROJECT_PATH="/opt/project">
+          <type_data command="EXEC" />
+          <dockerComposeConfigurationPaths>
+            <item value="$PROJECT_DIR$/compose.yaml" />
+          </dockerComposeConfigurationPaths>
+          <envs />
+        </remote_data>
       </interpreter>
     </interpreters>
   </component>
   <component name="PhpInterpretersPhpInfoCache">
     <phpInfoCache>
-      <interpreter name="cliniflow-app:latest">
+      <interpreter name="CliniFlow">
         <phpinfo binary_type="PHP" php_cli="/usr/local/bin/php" path_separator=":" version="8.5.12">
           <additional_php_ini>/usr/local/etc/php/conf.d/docker-fpm.ini, /usr/local/etc/php/conf.d/docker-php-ext-intl.ini, /usr/local/etc/php/conf.d/docker-php-ext-pcntl.ini, /usr/local/etc/php/conf.d/docker-php-ext-pdo_mysql.ini, /usr/local/etc/php/conf.d/docker-php-ext-redis.ini, /usr/local/etc/php/conf.d/docker-php-ext-sodium.ini, /usr/local/etc/php/conf.d/docker-php-ext-zip.ini</additional_php_ini>
           <configuration_file />
@@ -237,6 +233,11 @@
   </component>
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/backend/phpunit.xml" custom_loader_path="$PROJECT_DIR$/backend/vendor/autoload.php" paratest_path="$PROJECT_DIR$/backend/vendor/bin/paratest_for_phpstorm" use_configuration_file="true" />
+    </phpunit_settings>
   </component>
   <component name="Psalm">
     <Psalm_settings>

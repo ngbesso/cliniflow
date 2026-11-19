@@ -71,6 +71,7 @@ services:
   # l'application créée (tâche CLF-35).
   front:
     image: node:24-alpine
+    user: "${UID:-1000}:${GID:-1000}"
     profiles: ["front"]
     working_dir: /app
     command: sh -c "npm install && npm run dev -- --host 0.0.0.0"

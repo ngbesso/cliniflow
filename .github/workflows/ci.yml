@@ -1,0 +1,127 @@
+# ---------------------------------------------------------------
+# Intégration continue CliniFlow
+# Vérifie chaque pull request vers main, et main après chaque fusion.
+# Les deux jobs (back et front) tournent en parallèle.
+# ---------------------------------------------------------------
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Si tu pousses un nouveau commit sur une PR, l'exécution précédente
+# (devenue inutile) est annulée.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Principe du moindre privilège : la CI peut seulement lire le code.
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: Back-end
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    # Conteneur Redis démarré à côté du job, comme dans compose.yaml
+    services:
+      redis:
+        image: redis:7.4-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+
+    # Variables d'environnement qui priment sur le fichier .env
+    env:
+      REDIS_HOST: 127.0.0.1
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ':memory:'
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v6
+
+      - name: Installer PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: intl, zip, pcntl, pdo_mysql, pdo_sqlite, redis
+          coverage: none
+          tools: composer:v2
+
+      - name: Trouver le dossier de cache de Composer
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Mettre en cache les paquets Composer
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Installer les dépendances
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Préparer l'environnement Laravel
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Style (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Analyse statique (Larastan)
+        run: vendor/bin/phpstan analyse --memory-limit=1G --no-progress
+
+      - name: Architecture (Deptrac)
+        run: vendor/bin/deptrac analyse --no-progress
+
+      - name: Tests (Pest)
+        run: vendor/bin/pest
+
+  frontend:
+    name: Front-end
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v6
+
+      - name: Installer Node 24 (avec cache npm)
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Style (Prettier)
+        run: npm run format:check
+
+      - name: Linter (Oxlint)
+        run: npm run lint
+
+      - name: Types (TypeScript)
+        run: npm run typecheck
+
+      - name: Tests (Vitest)
+        run: npm run test:run
+
+      - name: Build de production
+        run: npm run build

@@ -1,5 +1,7 @@
 # CliniFlow
 
+[![CI](https://github.com/ngbesso/cliniflow/actions/workflows/ci.yml/badge.svg)](https://github.com/ngbesso/cliniflow/actions/workflows/ci.yml)
+
 Plateforme de triage et de suivi des patients à l'urgence : priorisation automatique (P1 à P5), file d'attente des médecins, import des résultats de laboratoire depuis un DME simulé et journal d'audit.
 
 > Projet d'apprentissage. Toutes les données sont fictives et les règles de triage n'ont aucune valeur clinique.

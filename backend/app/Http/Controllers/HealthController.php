@@ -28,6 +28,7 @@ final class HealthController
     {
         try {
             $probe();
+
             return 'ok';
         } catch (Throwable) {
             return 'down';

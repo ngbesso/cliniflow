@@ -139,6 +139,18 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/backend/storage/app" />
       <excludeFolder url="file://$MODULE_DIR$/backend/storage/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/deptrac/deptrac" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/iamcal/sql-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/jetbrains/phpstorm-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/larastan/larastan" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpdocumentor/graphviz" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpstan/phpstan" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/config" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/dependency-injection" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/filesystem" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/polyfill-deepclone" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/var-exporter" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/yaml" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

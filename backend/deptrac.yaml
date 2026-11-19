@@ -1,0 +1,35 @@
+# Vérifie automatiquement les règles de dépendance de la Clean Architecture.
+deptrac:
+  paths:
+    - ./app/Features
+
+  layers:
+    - name: Domain
+      collectors:
+        - type: directory
+          value: app/Features/[^/]+/Domain/.*
+
+    - name: Application
+      collectors:
+        - type: directory
+          value: app/Features/[^/]+/Application/.*
+
+    - name: Infrastructure
+      collectors:
+        - type: directory
+          value: app/Features/[^/]+/Infrastructure/.*
+
+    - name: Framework
+      collectors:
+        - type: classLike
+          value: ^Illuminate\\.*
+
+  # Qui a le droit de dépendre de qui. Tout ce qui n'est pas listé est interdit.
+  ruleset:
+    Domain: ~
+    Application:
+      - Domain
+    Infrastructure:
+      - Domain
+      - Application
+      - Framework

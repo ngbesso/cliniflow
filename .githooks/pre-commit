@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# ---------------------------------------------------------------
+# Hook pre-commit : vérifie le style des fichiers indexés (git add)
+# avant chaque commit. Activation unique : make hooks
+# ---------------------------------------------------------------
+set -euo pipefail
+
+if ! docker compose ps --status running --services 2>/dev/null | grep -qx app; then
+  echo "✖ Le conteneur 'app' n'est pas démarré. Lance : docker compose up -d"
+  exit 1
+fi
+
+# Fichiers ajoutés, copiés, modifiés ou renommés dans ce commit.
+# Le chemin est rendu relatif à backend/ ou frontend/, car c'est
+# le dossier de travail de chaque conteneur.
+mapfile -t php_files < <(git diff --cached --name-only --diff-filter=ACMR -- 'backend/*.php' | sed 's#^backend/##')
+mapfile -t front_files < <(git diff --cached --name-only --diff-filter=ACMR -- 'frontend/src/*.ts' 'frontend/src/*.tsx' | sed 's#^frontend/##')
+
+status=0
+
+if (( ${#php_files[@]} )); then
+  echo "→ Pint : ${#php_files[@]} fichier(s) PHP"
+  docker compose exec -T app ./vendor/bin/pint --test "${php_files[@]}" || status=1
+fi
+
+if (( ${#front_files[@]} )); then
+  echo "→ Prettier et Oxlint : ${#front_files[@]} fichier(s) TypeScript"
+  docker compose run --rm -T front npx prettier --check "${front_files[@]}" || status=1
+  docker compose run --rm -T front npx oxlint --deny-warnings "${front_files[@]}" || status=1
+fi
+
+if (( status )); then
+  echo "✖ Commit refusé. Corrige avec « make format », refais « git add », puis recommite."
+  exit 1
+fi
+
+echo "✔ Vérifications réussies."

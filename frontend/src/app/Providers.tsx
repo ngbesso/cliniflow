@@ -5,9 +5,9 @@ import type { ReactNode } from 'react'
 const queryClient = new QueryClient()
 
 type Props = {
-    children: ReactNode
+  children: ReactNode
 }
 
 export function Providers({ children }: Props) {
-    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 }

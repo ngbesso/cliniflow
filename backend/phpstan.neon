@@ -1,0 +1,8 @@
+# Analyse statique : détecte les erreurs de types sans exécuter le code.
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 8
+    paths:
+        - app/

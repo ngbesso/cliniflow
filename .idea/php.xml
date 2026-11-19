@@ -153,6 +153,17 @@
       <path value="$PROJECT_DIR$/backend/vendor/vlucas/phpdotenv" />
       <path value="$PROJECT_DIR$/backend/vendor/voku/portable-ascii" />
       <path value="$PROJECT_DIR$/backend/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/backend/vendor/larastan/larastan" />
+      <path value="$PROJECT_DIR$/backend/vendor/iamcal/sql-parser" />
+      <path value="$PROJECT_DIR$/backend/vendor/phpstan/phpstan" />
+      <path value="$PROJECT_DIR$/backend/vendor/deptrac/deptrac" />
+      <path value="$PROJECT_DIR$/backend/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/backend/vendor/symfony/dependency-injection" />
+      <path value="$PROJECT_DIR$/backend/vendor/symfony/filesystem" />
+      <path value="$PROJECT_DIR$/backend/vendor/symfony/polyfill-deepclone" />
+      <path value="$PROJECT_DIR$/backend/vendor/symfony/var-exporter" />
+      <path value="$PROJECT_DIR$/backend/vendor/symfony/config" />
+      <path value="$PROJECT_DIR$/backend/vendor/phpdocumentor/graphviz" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

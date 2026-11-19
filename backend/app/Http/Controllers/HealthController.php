@@ -19,7 +19,7 @@ final class HealthController
         $healthy = ! in_array('down', $checks, true);
 
         return response()->json([
-            'status' => $healthy ? 'oui' : 'degraded',
+            'status' => $healthy ? 'ok' : 'degraded',
             'checks' => $checks,
         ], $healthy ? 200 : 503);
     }

@@ -11,6 +11,10 @@ export default defineConfig({
         target: 'http://web',
         changeOrigin: true,
       },
+      '/sanctum': {
+        target: 'http://web',
+        changeOrigin: true,
+      },
     },
   },
   test: {

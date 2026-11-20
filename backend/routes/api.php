@@ -3,4 +3,7 @@
 use App\Http\Controllers\HealthController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
 Route::get('/health', HealthController::class);

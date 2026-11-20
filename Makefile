@@ -47,4 +47,4 @@ test:     ## Lancer tous les tests (back et front)
 	docker compose exec -T app ./vendor/bin/pest
 	docker compose run --rm -T front npm run test:run
 
-quality: lint analyse test ## Tout vérifier, comme le fera la CI
+quality: format lint analyse test ## Tout vérifier, comme le fera la CI

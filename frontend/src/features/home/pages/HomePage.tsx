@@ -1,4 +1,5 @@
 import type { User } from '../../auth/api/authApi'
+import { LogoutButton } from '../../auth/components/LogoutButton'
 import { useCurrentUser } from '../../auth/hooks/useCurrentUser'
 import { HealthPanel } from '../../health/components/HealthPanel'
 
@@ -25,6 +26,7 @@ export function HomePage() {
             <span className="rounded-full bg-teal-50 px-2.5 py-0.5 text-xs font-medium text-teal-800 ring-1 ring-teal-200">
               {user.roleLabel}
             </span>
+            <LogoutButton />
           </div>
         </div>
       </header>

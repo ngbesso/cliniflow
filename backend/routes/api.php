@@ -5,8 +5,10 @@ use App\Http\Controllers\HealthController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use function Pest\Laravel\withoutMiddleware;
 
-Route::get('/health', HealthController::class);
+Route::get('/health', HealthController::class)->withoutMiddleware(EnsureFrontendRequestsAreStateful::class);
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 

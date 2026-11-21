@@ -29,6 +29,10 @@ async function parseBody(response: Response): Promise<unknown> {
   return text === '' ? null : (JSON.parse(text) as unknown)
 }
 
+function toAbsoluteUrl(url: string): string {
+  return new URL(url, window.location.origin).toString()
+}
+
 export async function request(
   method: Method,
   url: string,
@@ -45,7 +49,7 @@ export async function request(
     headers['X-XSRF-TOKEN'] = xsrfToken
   }
 
-  const response = await fetch(url, {
+  const response = await fetch(toAbsoluteUrl(url), {
     method,
     headers,
     credentials: 'same-origin',
@@ -60,5 +64,5 @@ export function getJson(url: string): Promise<HttpResponse> {
 }
 
 export async function ensureCsrfCookie(): Promise<void> {
-  await fetch('/sanctum/csrf-cookie', { credentials: 'same-origin' })
+  await fetch(toAbsoluteUrl('/sanctum/csrf-cookie'), { credentials: 'same-origin' })
 }

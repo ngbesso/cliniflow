@@ -17,6 +17,14 @@ export class HttpError extends Error {
   }
 }
 
+type UnauthorizedListener = () => void
+
+let unauthorizedListener: UnauthorizedListener | null = null
+
+export function setUnauthorizedListener(listener: UnauthorizedListener | null): void {
+  unauthorizedListener = listener
+}
+
 function readCookie(name: string): string | null {
   const cookie = document.cookie.split('; ').find((row) => row.startsWith(`${name}=`))
 
@@ -55,6 +63,10 @@ export async function request(
     credentials: 'same-origin',
     body: data === undefined ? undefined : JSON.stringify(data),
   })
+
+  if (response.status === 401 && unauthorizedListener) {
+    unauthorizedListener()
+  }
 
   return { status: response.status, body: await parseBody(response) }
 }

@@ -19,6 +19,7 @@ final class AuthenticatedSessionController extends Controller
 
         return new UserResource($request->user());
     }
+
     public function destroy(Request $request): Response
     {
         Auth::guard('web')->logout();

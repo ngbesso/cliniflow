@@ -65,3 +65,11 @@ export async function fetchCurrentUser(): Promise<User | null> {
 
   return userResponseSchema.parse(body).data
 }
+
+export async function logout(): Promise<void> {
+  const { status, body } = await request('POST', '/api/logout')
+
+  if (status !== 204 && status !== 401) {
+    throw new HttpError(status, body)
+  }
+}

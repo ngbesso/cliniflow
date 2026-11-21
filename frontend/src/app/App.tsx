@@ -1,11 +1,21 @@
-// src/app/App.tsx
-import { HealthPanel } from '../features/health/components/HealthPanel'
+import { Navigate, Route, Routes } from 'react-router'
+import { RequireAuth } from '../features/auth/components/RequireAuth'
+import { LoginPage } from '../features/auth/pages/LoginPage'
+import { HomePage } from '../features/home/pages/HomePage'
 
 export function App() {
   return (
-    <main>
-      <h1>CliniFlow</h1>
-      <HealthPanel />
-    </main>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/"
+        element={
+          <RequireAuth>
+            <HomePage />
+          </RequireAuth>
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }

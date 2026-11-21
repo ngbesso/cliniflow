@@ -12,3 +12,6 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 Route::get('/user', fn (Request $request) => new UserResource($request->user()))
     ->middleware('auth:sanctum');
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth:sanctum');

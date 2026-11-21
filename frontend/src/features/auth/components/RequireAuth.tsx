@@ -10,7 +10,11 @@ export function RequireAuth({ children }: Props) {
   const { data: user, isPending } = useCurrentUser()
 
   if (isPending) {
-    return <p>Chargement…</p>
+    return (
+      <p className="flex min-h-screen items-center justify-center bg-slate-100 text-slate-600">
+        Chargement…
+      </p>
+    )
   }
 
   if (!user) {
